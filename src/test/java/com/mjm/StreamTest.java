@@ -3,9 +3,7 @@ package com.mjm;
 import com.mjm.stream.entity.Dish;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.*;
@@ -165,6 +163,82 @@ public class StreamTest {
                 .map(i -> i * i)
                 .findFirst();
         System.out.println(res.orElse(0));
+
+
+        /**
+         *  下面两种情况
+         *  为什么resuce  是 Optional<Integer> ??
+         *
+         */
+        List<Integer> integers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        Integer result = integers.stream().reduce(0, (x, y) -> x + y);
+        System.out.println(result);
+
+        Optional<Integer> reduce = menu.stream()
+                .filter(Dish::isVegetarian)
+                .filter(dish1 -> dish1.getCalories() > 1000)
+                .map(Dish::getCalories)
+                .reduce(Integer::sum);
+
+
+    }
+
+    /**
+     * collect 江流转化为其他形式，。接受一个Colllector接口实现，用于给六种元素做汇总操作
+     */
+    public void testCollect(){
+        Set<String> collect = menu.stream().map(Dish::getName)
+                .collect(Collectors.toSet());
+
+        List<Integer> collect1 = menu.stream().map(Dish::getCalories)
+                .collect(Collectors.toList());
+
+        /**
+         * 放入特殊的集合中  Collectors.toCollection
+         */
+        HashSet<String> collect2 = menu.stream().map(Dish::getName)
+                .collect(Collectors.toCollection(HashSet::new));
+
+        //平均数  最大值  最小值 总和  总数
+        Double collect3 = menu.stream()
+                .collect(Collectors.averagingDouble(Dish::getCalories));
+        Optional<Dish> collect4 = menu.stream()
+                .collect(Collectors
+                        .maxBy(Comparator.comparingInt(Dish::getCalories)));
+    }
+
+    /**
+     * 分组 groupingBy
+     * 分区 partitioningBy
+     */
+    public void testGrouping(){
+        Map<Dish.Type, List<Dish>> collect = menu.stream().collect(Collectors.groupingBy(Dish::getType));
+
+        /**
+         * 先按 Type 分组  再按  卡路里 分区段分组
+         */
+        menu.stream().collect(Collectors.groupingBy(Dish::getType, Collectors.groupingBy(dish -> {
+            if (dish.getCalories() > 2000){
+                return "high";
+            } else if (dish.getCalories() > 1000){
+                return "middle";
+            } else {
+                return "low";
+            }
+        })));
+    }
+
+    /**
+     * 统计
+     */
+    public void testSummarizing(){
+        DoubleSummaryStatistics dss = menu.stream()
+                .collect(Collectors.summarizingDouble(Dish::getCalories));
+        System.out.println(dss.getMax());
+        System.out.println(dss.getAverage());
+        System.out.println(dss.getCount());
+        System.out.println(dss.getMin());
+        System.out.println(dss.getSum());
     }
 
 
