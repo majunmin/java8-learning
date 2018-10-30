@@ -4,7 +4,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.stream.LongStream;
 
-import com.mjm.forkjoin.ForkJoinCalculate;
+import com.mjm.stream.forkjoin.ForkJoinCalculate;
 import org.junit.Test;
 
 public class TestForkJoin {

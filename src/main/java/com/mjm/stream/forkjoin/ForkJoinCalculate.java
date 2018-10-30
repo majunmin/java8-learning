@@ -1,4 +1,4 @@
-package com.mjm.forkjoin;
+package com.mjm.stream.forkjoin;
 
 import java.util.concurrent.RecursiveTask;
 
