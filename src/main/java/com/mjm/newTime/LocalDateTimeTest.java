@@ -4,7 +4,6 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Set;
 
 /**
  * @author majun
@@ -16,13 +15,13 @@ public class LocalDateTimeTest {
 
     public static void main(String[] args) {
 
-        testPeriod();
-
-        testAdjust();
+//        testPeriod();
+//
+//        testAdjust();
         
         testDateTimeFormatter();
 
-        testZone();
+//        testZone();
     }
 
     private static void testZone() {
@@ -45,8 +44,10 @@ public class LocalDateTimeTest {
         DateTimeFormatter isoDateTime = DateTimeFormatter.ISO_DATE_TIME;
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        String res = dateTimeFormatter.format(ldt);
+        System.out.println(res);
 
-        System.out.println(dateTimeFormatter.format(ldt));
+        System.out.println(LocalDateTime.parse(res, DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
 
     }
 
